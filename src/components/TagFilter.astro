@@ -1,0 +1,39 @@
+---
+import { getTagTones, tagLabel, tagSlug } from '../lib/content';
+
+interface Props {
+  tags: { tag: string; count: number }[];
+  total: number;
+  /** Slug of the tag currently being viewed, or undefined on /blog. */
+  active?: string;
+}
+
+const { tags, total, active } = Astro.props;
+const tones = await getTagTones();
+---
+
+<nav class="tag-filter" aria-label="Filter posts by tag">
+  <a
+    class="tag-chip tag-chip--all"
+    href="/blog"
+    aria-current={active ? undefined : 'page'}
+  >
+    All <span class="tag-chip__count">{total}</span>
+  </a>
+
+  {
+    tags.map(({ tag, count }) => {
+      const slug = tagSlug(tag);
+      return (
+        <a
+          class="tag-chip"
+          data-tone={tones.get(tag)}
+          href={`/blog/tags/${slug}`}
+          aria-current={active === slug ? 'page' : undefined}
+        >
+          {tagLabel(tag)} <span class="tag-chip__count">{count}</span>
+        </a>
+      );
+    })
+  }
+</nav>

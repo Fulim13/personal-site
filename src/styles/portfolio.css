@@ -1,0 +1,581 @@
+/*
+ * The Portfolio zone: playful, colourful, card-led.
+ *
+ * Deliberately a different register from the Writing zone (docs/adr/0003). The
+ * shift is carried by the full-height top stripe, the wider measure, colour,
+ * and ornament — all of which drop away at /blog.
+ */
+
+.section {
+  padding-top: var(--space-8);
+}
+
+.section__title {
+  font-size: var(--text-h2);
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+
+.section__title::after {
+  content: '';
+  flex: 1;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    var(--border),
+    transparent
+  );
+}
+
+.section__lead {
+  color: var(--text-muted);
+  max-width: 60ch;
+  margin-top: calc(var(--space-5) * -1 + var(--space-2));
+  margin-bottom: var(--space-5);
+}
+
+/* ---- Hero --------------------------------------------------------------- */
+
+.hero {
+  padding-top: var(--space-7);
+  display: grid;
+  gap: var(--space-5);
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+}
+
+.hero__name {
+  font-size: var(--text-h1);
+  line-height: 1.05;
+}
+
+.hero__tagline {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--accent-vermillion);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: var(--space-3);
+}
+
+.hero__intro {
+  font-size: var(--text-lg);
+  color: var(--text-muted);
+  max-width: 55ch;
+  margin-top: var(--space-4);
+}
+
+.hero__intro strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.hero__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-5);
+  list-style: none;
+  padding: 0;
+}
+
+.hero__links a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg-subtle);
+  text-decoration: none;
+  color: var(--text);
+  font-size: var(--text-sm);
+}
+
+.hero__links a:hover {
+  border-color: var(--hover);
+  color: var(--hover);
+}
+
+@media (max-width: 720px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+
+  .hero__name {
+    font-size: 2.25rem;
+  }
+}
+
+/* ---- Experience timeline ------------------------------------------------ */
+
+.timeline {
+  list-style: none;
+  padding: 0;
+  position: relative;
+  margin-left: var(--space-3);
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.6rem;
+  bottom: 0.6rem;
+  width: 2px;
+  background: linear-gradient(
+    to bottom,
+    var(--accent-vermillion),
+    var(--accent-orange),
+    var(--accent-green),
+    var(--accent-sky)
+  );
+  opacity: 0.5;
+}
+
+.timeline__group {
+  list-style: none;
+}
+
+.timeline__roles {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Always present — the organisation is the heading for every group, whether it
+ * holds one role or three. */
+.timeline__org {
+  position: relative;
+  padding-left: var(--space-5);
+  padding-bottom: var(--space-2);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-1) var(--space-3);
+}
+
+.timeline__group + .timeline__group .timeline__org {
+  padding-top: var(--space-5);
+}
+
+/* Small and quiet — a label naming the organisation, not a headline. The role
+ * below it is the line that should carry the weight. */
+.timeline__org-name {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.timeline__org-duration {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-faint);
+}
+
+.timeline__item {
+  position: relative;
+  padding-left: var(--space-5);
+  padding-bottom: var(--space-5);
+}
+
+.timeline__group:last-child .timeline__item:last-child {
+  padding-bottom: 0;
+}
+
+.timeline__dot {
+  position: absolute;
+  left: -4px;
+  /* Sits on the optical centre of the role's first line. */
+  top: 0.5rem;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid var(--accent-orange);
+}
+
+.timeline__item--education .timeline__dot {
+  border-color: var(--accent-sky);
+}
+
+.timeline__item--certification .timeline__dot {
+  border-color: var(--accent-plum);
+  border-radius: 2px;
+  transform: rotate(45deg);
+}
+
+.timeline__item--current .timeline__dot {
+  border-color: var(--accent-green);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-green) 20%, transparent);
+}
+
+
+/* The role carries the weight. Modest in absolute terms — this is a list to be
+ * scanned, not a set of headings. */
+.timeline__role {
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.timeline__role a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.timeline__role a:hover {
+  color: var(--hover);
+}
+
+.timeline__meta {
+  color: var(--text-faint);
+  font-size: var(--text-sm);
+  margin-top: 0.15rem;
+}
+
+.timeline__meta .sep {
+  padding: 0 0.4em;
+  opacity: 0.7;
+}
+
+.timeline__blurb {
+  margin-top: var(--space-2);
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  max-width: 65ch;
+}
+
+.timeline__highlights {
+  margin-top: var(--space-2);
+  padding-left: var(--space-5);
+  color: var(--text-muted);
+  max-width: 65ch;
+}
+
+.timeline__highlights li {
+  padding-block: 0.15rem;
+}
+
+.timeline__item .chip-list {
+  margin-top: var(--space-3);
+}
+
+/* ---- Tech Cards ---------------------------------------------------------
+ * An original stylisation: portrait panel, type badge, level pips, flavour
+ * line. Deliberately not a reproduction of any existing card game's trade
+ * dress (docs/adr/0003).
+ */
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: var(--space-4);
+  list-style: none;
+  padding: 0;
+}
+
+.tech-card {
+  --card-accent: var(--accent-slate);
+
+  position: relative;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--bg-subtle);
+  padding: var(--space-2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  overflow: hidden;
+  /* Springy easing — it should feel like a card being picked up, not a box
+   * sliding. base.css disables all of this under prefers-reduced-motion. */
+  transition:
+    transform 260ms cubic-bezier(0.2, 0.8, 0.25, 1),
+    box-shadow 260ms ease,
+    border-color 260ms ease;
+}
+
+.tech-card:hover,
+.tech-card:focus-within {
+  transform: translateY(-8px) scale(1.025);
+  border-color: color-mix(in srgb, var(--card-accent) 55%, var(--border));
+  box-shadow:
+    0 2px 4px rgb(0 0 0 / 8%),
+    0 14px 32px color-mix(in srgb, var(--card-accent) 22%, transparent);
+}
+
+.tech-card[data-type='language'] { --card-accent: var(--accent-blue); }
+.tech-card[data-type='framework'] { --card-accent: var(--accent-vermillion); }
+.tech-card[data-type='runtime'] { --card-accent: var(--accent-green); }
+.tech-card[data-type='data'] { --card-accent: var(--accent-purple); }
+.tech-card[data-type='messaging'] { --card-accent: var(--accent-plum); }
+.tech-card[data-type='infra'] { --card-accent: var(--accent-sky); }
+.tech-card[data-type='tooling'] { --card-accent: var(--accent-orange); }
+.tech-card[data-type='testing'] { --card-accent: var(--accent-teal); }
+.tech-card[data-type='design'] { --card-accent: var(--accent-yellow); }
+.tech-card[data-type='practice'] { --card-accent: var(--accent-slate); }
+
+/* The accent bar at the top thickens on hover. */
+.tech-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 4px;
+  background: var(--card-accent);
+  transition: height 260ms cubic-bezier(0.2, 0.8, 0.25, 1);
+  z-index: 1;
+}
+
+.tech-card:hover::before,
+.tech-card:focus-within::before {
+  height: 7px;
+}
+
+.tech-card__portrait {
+  position: relative;
+  margin-top: var(--space-2);
+  border-radius: var(--radius);
+  background:
+    radial-gradient(
+      circle at 30% 25%,
+      color-mix(in srgb, var(--card-accent) 28%, transparent),
+      transparent 65%
+    ),
+    var(--bg-inset);
+  aspect-ratio: 4 / 3;
+  display: grid;
+  place-items: center;
+  font-size: 2.75rem;
+  line-height: 1;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  transition: background 260ms ease, border-color 260ms ease;
+}
+
+.tech-card:hover .tech-card__portrait,
+.tech-card:focus-within .tech-card__portrait {
+  border-color: color-mix(in srgb, var(--card-accent) 40%, var(--border));
+  background:
+    radial-gradient(
+      circle at 30% 25%,
+      color-mix(in srgb, var(--card-accent) 42%, transparent),
+      transparent 70%
+    ),
+    var(--bg-inset);
+}
+
+/* The glyph itself lifts a little, which is what sells the depth. */
+.tech-card__glyph {
+  display: block;
+  transition: transform 320ms cubic-bezier(0.2, 0.8, 0.25, 1);
+  will-change: transform;
+}
+
+.tech-card:hover .tech-card__glyph,
+.tech-card:focus-within .tech-card__glyph {
+  transform: scale(1.14) rotate(-3deg);
+}
+
+.tech-card__name {
+  font-size: var(--text-base);
+  font-weight: 600;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.tech-card__years {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-faint);
+  font-weight: 400;
+}
+
+.tech-card__type {
+  align-self: flex-start;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  color: color-mix(in srgb, var(--card-accent) 82%, var(--text));
+  background: color-mix(in srgb, var(--card-accent) 16%, transparent);
+  border: 1px solid color-mix(in srgb, var(--card-accent) 35%, transparent);
+}
+
+.tech-card__pips {
+  display: flex;
+  gap: 3px;
+}
+
+.tech-card__pip {
+  width: 100%;
+  height: 5px;
+  border-radius: 2px;
+  background: var(--bg-inset);
+  border: 1px solid var(--border);
+}
+
+.tech-card__pip--on {
+  background: var(--card-accent);
+  border-color: var(--card-accent);
+}
+
+.tech-card__flavour {
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  border-top: 1px dashed var(--border);
+  padding-top: var(--space-2);
+  text-wrap: pretty;
+}
+
+/* A foil sheen that sweeps across the card on hover. Sits above the content
+ * but ignores the pointer, so it never blocks a click. */
+.tech-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background: linear-gradient(
+    115deg,
+    transparent 38%,
+    color-mix(in srgb, var(--card-accent) 22%, transparent) 47%,
+    color-mix(in srgb, #fff 26%, transparent) 50%,
+    color-mix(in srgb, var(--card-accent) 22%, transparent) 53%,
+    transparent 62%
+  );
+  opacity: 0;
+  transform: translateX(-60%);
+  transition: opacity 200ms ease, transform 700ms cubic-bezier(0.3, 0.7, 0.3, 1);
+}
+
+.tech-card:hover::after,
+.tech-card:focus-within::after {
+  opacity: 1;
+  transform: translateX(60%);
+}
+
+/* The ones you are proudest of keep a quiet tint even at rest. */
+.tech-card--featured {
+  border-color: color-mix(in srgb, var(--card-accent) 45%, var(--border));
+  background:
+    linear-gradient(
+      160deg,
+      color-mix(in srgb, var(--card-accent) 9%, transparent),
+      transparent 55%
+    ),
+    var(--bg-subtle);
+}
+
+/* ---- Project grid ------------------------------------------------------- */
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-4);
+  list-style: none;
+  padding: 0;
+}
+
+.project-card {
+  position: relative;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--bg-subtle);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+
+.project-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow);
+}
+
+.project-card__year {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-faint);
+}
+
+.project-card__title {
+  font-size: var(--text-h3);
+}
+
+.project-card__title a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+/* The title's link is stretched over the whole card, so clicking anywhere that
+ * is not another link opens the project. Live/Source/Read more sit above it. */
+.project-card__title a::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.project-card:hover .project-card__title a,
+.project-card:focus-within .project-card__title a {
+  color: var(--hover);
+}
+
+.project-card__blurb {
+  color: var(--text-muted);
+  font-size: var(--text-base);
+  flex: 1;
+}
+
+.project-card__links {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+  font-size: var(--text-sm);
+  padding-top: var(--space-1);
+}
+
+.project-card__links a {
+  text-decoration: none;
+}
+
+.project-card__links a:hover {
+  text-decoration: underline;
+}
+
+/* ---- Project detail ----------------------------------------------------- */
+
+.project-page {
+  max-width: var(--measure);
+  margin: 0 auto;
+}
+
+.project-page__header {
+  padding-top: var(--space-6);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: var(--space-4);
+}
+
+.project-page__header h1 {
+  font-size: var(--text-h1);
+}
+
+@media (max-width: 640px) {
+  .project-page__header h1 {
+    font-size: 2.1rem;
+  }
+}

@@ -1,0 +1,99 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import type { Post } from '../lib/content';
+import { excerpt, getTagTones, tagLabel, tagSlug } from '../lib/content';
+import { formatDate } from '../site.config';
+
+interface Props {
+  post: Post;
+}
+
+const { post } = Astro.props;
+const { title, pubDate, updatedDate, tags, draft, unlisted } = post.data;
+const tones = await getTagTones();
+
+/**
+ * Tag pages are generated from listed Posts only, so an unlisted Post's tags
+ * may have no page to point at. Render them as plain chips instead of links —
+ * an unlisted Post sits outside the taxonomy.
+ */
+const tagsLink = !unlisted;
+---
+
+<BaseLayout
+  title={title}
+  description={excerpt(post)}
+  zone="writing"
+  ogType="article"
+  publishedTime={pubDate}
+  noindex={unlisted}
+>
+  {
+    draft && (
+      <p class="draft-banner">
+        <strong>Draft.</strong> This Post is excluded from production builds —
+        you are seeing it because you are running the site locally.
+      </p>
+    )
+  }
+
+  {
+    unlisted && !draft && (
+      <p class="notice-banner">
+        <strong>Unlisted.</strong> This Post is published and reachable at this
+        link, but does not appear on the blog index, in the feed, or in search
+        results.
+      </p>
+    )
+  }
+
+  <article class="prose-page">
+    <header class="post-header">
+      <h1>{title}</h1>
+
+      <div class="post-meta">
+        <time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time>
+
+        {
+          updatedDate && (
+            <span class="post-meta__updated">
+              updated <time datetime={updatedDate.toISOString()}>
+                {formatDate(updatedDate)}
+              </time>
+            </span>
+          )
+        }
+
+        {
+          tags.length > 0 && (
+            <ul class="tag-list">
+              {tags.map((tag) =>
+                tagsLink ? (
+                  <li>
+                    <a
+                      class="tag-chip"
+                      data-tone={tones.get(tag)}
+                      href={`/blog/tags/${tagSlug(tag)}`}
+                    >
+                      {tagLabel(tag)}
+                    </a>
+                  </li>
+                ) : (
+                  <li>
+                    <span class="tag-chip" data-tone={tones.get(tag)}>
+                      {tagLabel(tag)}
+                    </span>
+                  </li>
+                ),
+              )}
+            </ul>
+          )
+        }
+      </div>
+    </header>
+
+    <div class="prose">
+      <slot />
+    </div>
+  </article>
+</BaseLayout>

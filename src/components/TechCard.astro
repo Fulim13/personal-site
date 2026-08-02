@@ -1,0 +1,43 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  card: CollectionEntry<'tech'>;
+}
+
+const { card } = Astro.props;
+const { name, type, glyph, level, years, flavour, featured } = card.data;
+const pips = [1, 2, 3, 4, 5];
+---
+
+<li
+  class:list={['tech-card', featured && 'tech-card--featured']}
+  data-type={type}
+>
+  <div class="tech-card__portrait" aria-hidden="true">
+    <span class="tech-card__glyph">{glyph}</span>
+  </div>
+
+  <p class="tech-card__name">
+    <span>{name}</span>
+    {years && <span class="tech-card__years">{years}y</span>}
+  </p>
+
+  <span class="tech-card__type">{type}</span>
+
+  <div
+    class="tech-card__pips"
+    role="img"
+    aria-label={`Proficiency ${level} out of 5`}
+  >
+    {
+      pips.map((pip) => (
+        <span
+          class:list={['tech-card__pip', pip <= level && 'tech-card__pip--on']}
+        />
+      ))
+    }
+  </div>
+
+  <p class="tech-card__flavour">{flavour}</p>
+</li>

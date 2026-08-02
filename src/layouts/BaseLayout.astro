@@ -1,0 +1,215 @@
+---
+import { site, zoneFor } from '../site.config';
+import '../styles/base.css';
+import '../styles/writing.css';
+import '../styles/portfolio.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Overrides the zone inferred from the URL. */
+  zone?: 'writing' | 'portfolio';
+  /** Emitted as og:type. Posts and Projects are articles. */
+  ogType?: 'website' | 'article';
+  publishedTime?: Date;
+  /** Keeps the page out of search results. Used by unlisted Posts. */
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description = site.description,
+  zone = zoneFor(Astro.url.pathname),
+  ogType = 'website',
+  publishedTime,
+  noindex = false,
+} = Astro.props;
+
+const pageTitle = title ? `${title} — ${site.title}` : site.title;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+// Q24/B: one static site-wide card rather than per-Post generated images.
+const ogImage = new URL('/og-default.png', Astro.site);
+const currentPath = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const currentYear = new Date().getFullYear();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={`${site.title} — Blog`}
+      href={new URL('/rss.xml', Astro.site)}
+    />
+
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={title ?? site.title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:site_name" content={site.title} />
+    <meta name="twitter:card" content="summary_large_image" />
+    {
+      publishedTime && (
+        <meta
+          property="article:published_time"
+          content={publishedTime.toISOString()}
+        />
+      )
+    }
+
+    {/*
+      The only render-blocking script on the site (~300 bytes, inline).
+      It stamps data-theme before first paint so that a reader who has chosen a
+      theme never sees the other one flash. `is:inline` keeps it out of the
+      bundle — nothing here is fetched over the network.
+    */}
+    <script is:inline>
+      (function () {
+        try {
+          var saved = localStorage.getItem('theme');
+          if (saved === 'light' || saved === 'dark') {
+            document.documentElement.setAttribute('data-theme', saved);
+          }
+        } catch (e) {
+          /* private mode, or storage disabled — fall back to prefers-color-scheme */
+        }
+      })();
+    </script>
+  </head>
+
+  <body data-zone={zone}>
+    <a class="skip-link" href="#content">Skip to content</a>
+
+    <div class="topbar" role="presentation" aria-hidden="true">
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+
+    <header>
+      <nav class="site-nav" aria-label="Primary">
+        <a class="site-nav__home" href="/">{site.title}</a>
+        <ul class="site-nav__links">
+          {
+            site.nav
+              .filter((item) => item.href !== '/')
+              .map((item) => (
+                <li>
+                  <a
+                    href={item.href}
+                    aria-current={
+                      currentPath === item.href ||
+                      currentPath.startsWith(item.href + '/')
+                        ? 'page'
+                        : undefined
+                    }
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              ))
+          }
+          <li>
+            <a href="/rss.xml">RSS</a>
+          </li>
+          <li>
+            <button
+              class="theme-toggle"
+              type="button"
+              data-theme-toggle
+              aria-label="Switch between light and dark theme"
+            >
+              <span class="icon-light" aria-hidden="true">◐</span>
+              <span class="icon-dark" aria-hidden="true">◑</span>
+            </button>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="site-main" id="content">
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="site-footer__inner">
+        <span>
+          © {
+            currentYear === site.startYear
+              ? currentYear
+              : `${site.startYear}–${currentYear}`
+          } {site.author}
+        </span>
+      </div>
+    </footer>
+
+    {/*
+      Copy buttons for code blocks. Inline like everything else here — nothing
+      is fetched over the network. If this never runs, no button is created and
+      the code block is exactly as it was, so there is nothing to degrade.
+    */}
+    <script is:inline>
+      if (navigator.clipboard) {
+        document.querySelectorAll('pre.astro-code').forEach(function (pre) {
+          var button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'code-copy';
+          button.textContent = 'Copy';
+          button.setAttribute('aria-label', 'Copy code to clipboard');
+
+          var reset;
+          button.addEventListener('click', function () {
+            var code = pre.querySelector('code');
+            navigator.clipboard.writeText(code ? code.innerText : '').then(
+              function () {
+                button.textContent = 'Copied';
+                button.classList.add('is-copied');
+              },
+              function () {
+                button.textContent = 'Failed';
+              },
+            );
+            clearTimeout(reset);
+            reset = setTimeout(function () {
+              button.textContent = 'Copy';
+              button.classList.remove('is-copied');
+            }, 1800);
+          });
+
+          pre.appendChild(button);
+        });
+      }
+    </script>
+
+    {/*
+      Toggle handler. Also inline, so prose Posts still fetch zero JavaScript
+      files. It resolves the *current* effective theme before flipping, so the
+      first click always does what the reader expects.
+    */}
+    <script is:inline>
+      document.querySelector('[data-theme-toggle]')?.addEventListener('click', function () {
+        var root = document.documentElement;
+        var explicit = root.getAttribute('data-theme');
+        var current =
+          explicit ||
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        var next = current === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', next);
+        try {
+          localStorage.setItem('theme', next);
+        } catch (e) {
+          /* nothing to do — the choice just will not persist */
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { getProjects } from '../../lib/content';
+
+const projects = await getProjects();
+---
+
+<BaseLayout
+  title="Projects"
+  description="Things I have built."
+  zone="portfolio"
+>
+  <div class="zone-page">
+    <PageHeader title="Projects" />
+
+    {
+      projects.length > 0 ? (
+        <ul class="project-grid">
+          {projects.map((project) => (
+            <ProjectCard project={project} />
+          ))}
+        </ul>
+      ) : (
+        <p style="color: var(--text-muted)">
+          Add a markdown file to <code>src/content/projects/</code>.
+        </p>
+      )
+    }
+  </div>
+</BaseLayout>

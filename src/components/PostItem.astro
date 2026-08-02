@@ -1,0 +1,51 @@
+---
+import type { Post } from '../lib/content';
+import { excerpt, getTagTones, tagLabel, tagSlug } from '../lib/content';
+import { formatDate } from '../site.config';
+
+interface Props {
+  post: Post;
+}
+
+const { post } = Astro.props;
+const summary = excerpt(post, 200);
+const tones = await getTagTones();
+---
+
+<li class="post-item">
+  <h2 class="post-item__title">
+    <a href={`/blog/${post.id}`}>{post.data.title}</a>
+    {
+      post.data.featured && (
+        <>
+          <span class="post-item__star" aria-hidden="true">
+            ★
+          </span>
+          <span class="visually-hidden">Featured</span>
+        </>
+      )
+    }
+  </h2>
+
+  {summary && <p class="post-item__excerpt">{summary}</p>}
+
+  <p class="post-item__meta">
+    <time datetime={post.data.pubDate.toISOString()}>
+      {formatDate(post.data.pubDate)}
+    </time>
+
+    {post.data.draft && <span class="tag-chip tag-chip--draft">Draft</span>}
+
+    {
+      post.data.tags.map((tag) => (
+        <a
+          class="tag-chip"
+          data-tone={tones.get(tag)}
+          href={`/blog/tags/${tagSlug(tag)}`}
+        >
+          {tagLabel(tag)}
+        </a>
+      ))
+    }
+  </p>
+</li>

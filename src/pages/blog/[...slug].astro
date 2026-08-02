@@ -1,0 +1,21 @@
+---
+import { render } from 'astro:content';
+import PostLayout from '../../layouts/PostLayout.astro';
+import { getRoutablePosts } from '../../lib/content';
+
+export async function getStaticPaths() {
+  // Routable, not listed: unlisted Posts still need a page at their URL.
+  const posts = await getRoutablePosts();
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<PostLayout post={post}>
+  <Content />
+</PostLayout>

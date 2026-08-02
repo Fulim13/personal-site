@@ -1,0 +1,186 @@
+/*
+ * Design tokens shared by both zones.
+ *
+ * The two visual registers (docs/adr/0003) diverge in ornament and accent, not
+ * in fundamentals. Type scale, spacing, the grey ramp and the dark-mode
+ * machinery are common; writing.css and portfolio.css layer on top.
+ */
+
+:root {
+  /* ---- Typography -------------------------------------------------------
+   * No @font-face anywhere. Zero font bytes downloaded. See docs/adr/0004.
+   * Stacks are from modernfontstacks.com.
+   */
+  --font-heading: 'Iowan Old Style', 'Palatino Linotype', 'URW Palladio L', P052, Palatino, Georgia, serif;
+  --font-body: Seravek, 'Gill Sans Nova', Ubuntu, Calibri, 'DejaVu Sans', source-sans-pro, system-ui, sans-serif;
+  --font-mono: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace;
+
+  --text-xs: 0.78rem;
+  --text-sm: 0.9rem;
+  --text-base: 1rem;
+  --text-lg: 1.25rem;
+  --text-h3: 1.5rem;
+  --text-h2: 2rem;
+  --text-h1: 3rem;
+
+  --leading-tight: 1.2;
+  --leading-normal: 1.6;
+
+  /* ---- Spacing ---------------------------------------------------------- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.8rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 5rem;
+
+  --radius: 8px;
+  --radius-lg: 14px;
+
+  /* Reading measure for the Writing zone. Matches the reference site. */
+  --measure: 780px;
+  /* The Portfolio zone is grid-based and needs more room. */
+  --measure-wide: 1080px;
+
+  /* ---- Accents ----------------------------------------------------------
+   * Okabe-Ito, chosen for colourblind safety, plus two extensions to cover the
+   * nine Tech Card types.
+   */
+  --accent-blue: #0072b2;
+  --accent-vermillion: #d55e00;
+  --accent-green: #009e73;
+  --accent-purple: #cc79a7;
+  --accent-sky: #56b4e9;
+  --accent-orange: #e69f00;
+  --accent-teal: #4c9a8f;
+  --accent-yellow: #f0e442;
+  --accent-slate: #6b7a99;
+  --accent-plum: #8f5fb8;
+
+  /* ---- Chip hues --------------------------------------------------------
+   * Tags and technology chips are drawn from a single family: nine hues at one
+   * shared lightness and chroma, so they read as a set rather than as nine
+   * unrelated colours. Only the hue changes per tone; the lightness/chroma
+   * values live in the theme blocks below so light and dark stay balanced.
+   *
+   * The accent palette above stays as-is — it is Okabe-Ito, colourblind-safe,
+   * and correct for the tech cards. It is simply too saturated for small chips.
+   */
+  --chip-h-1: 258; /* indigo   */
+  --chip-h-2: 292; /* violet   */
+  --chip-h-3: 328; /* mauve    */
+  --chip-h-4: 15;  /* clay     */
+  --chip-h-5: 48;  /* amber    */
+  --chip-h-6: 140; /* moss     */
+  --chip-h-7: 172; /* teal     */
+  --chip-h-8: 200; /* slate blue */
+  --chip-h-9: 228; /* steel    */
+}
+
+/* ---- Light theme (default) ---------------------------------------------
+ * The grey ramp is very slightly tinted toward blue-violet so that Catppuccin
+ * code blocks sit inside the page rather than floating on it.
+ */
+:root,
+:root[data-theme='light'] {
+  color-scheme: light;
+
+  --bg: #fbfbfd;
+  --bg-subtle: #f1f1f6;
+  --bg-inset: #e8e8f0;
+  --border: #d9d9e3;
+
+  --text: #2a2a3c;
+  --text-muted: #5f5f78;
+  --text-faint: #8b8ba0;
+
+  --link: #3055b8;
+  --link-visited: #6b46a8;
+
+  --selection: #d6dffa;
+  --shadow: 0 1px 2px rgb(42 42 60 / 6%), 0 6px 20px rgb(42 42 60 / 6%);
+
+  /* One hover colour for the entire site. Every interactive element that
+     changes colour on hover uses this, so hover feedback is never orange in
+     one place and blue in another. */
+  --hover: #d55e00;
+
+  /* Chip lightness/chroma. Only the hue varies per tone. */
+  --chip-text-l: 0.46;
+  --chip-text-c: 0.11;
+  --chip-bg-l: 0.965;
+  --chip-bg-c: 0.028;
+  --chip-border-l: 0.87;
+  --chip-border-c: 0.05;
+  --chip-active-bg-l: 0.91;
+  --chip-active-bg-c: 0.065;
+}
+
+/* ---- Dark theme --------------------------------------------------------
+ * Applied when the OS asks for it AND the reader has not chosen otherwise, or
+ * whenever the reader has explicitly chosen dark. The inline script in
+ * BaseLayout stamps data-theme before first paint so neither flashes.
+ */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+
+    --bg: #16161f;
+    --bg-subtle: #1e1e2e;
+    --bg-inset: #262636;
+    --border: #33334a;
+
+    --text: #d6d6e6;
+    --text-muted: #9a9ab5;
+    --text-faint: #6c6c85;
+
+    --link: #8fa9f0;
+    --link-visited: #b79ae0;
+
+    --selection: #33406b;
+    --shadow: 0 1px 2px rgb(0 0 0 / 30%), 0 6px 20px rgb(0 0 0 / 30%);
+
+    --hover: #f0904a;
+
+    --chip-text-l: 0.82;
+    --chip-text-c: 0.095;
+    --chip-bg-l: 0.30;
+    --chip-bg-c: 0.042;
+    --chip-border-l: 0.44;
+    --chip-border-c: 0.06;
+    --chip-active-bg-l: 0.38;
+    --chip-active-bg-c: 0.075;
+  }
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --bg: #16161f;
+  --bg-subtle: #1e1e2e;
+  --bg-inset: #262636;
+  --border: #33334a;
+
+  --text: #d6d6e6;
+  --text-muted: #9a9ab5;
+  --text-faint: #6c6c85;
+
+  --link: #8fa9f0;
+  --link-visited: #b79ae0;
+
+  --selection: #33406b;
+  --shadow: 0 1px 2px rgb(0 0 0 / 30%), 0 6px 20px rgb(0 0 0 / 30%);
+
+  --hover: #f0904a;
+
+  --chip-text-l: 0.82;
+  --chip-text-c: 0.095;
+  --chip-bg-l: 0.30;
+  --chip-bg-c: 0.042;
+  --chip-border-l: 0.44;
+  --chip-border-c: 0.06;
+  --chip-active-bg-l: 0.38;
+  --chip-active-bg-c: 0.075;
+}

@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageHeader from '../../../components/PageHeader.astro';
+import PostItem from '../../../components/PostItem.astro';
+import TagFilter from '../../../components/TagFilter.astro';
+import { getPosts, getTags, tagLabel, tagSlug } from '../../../lib/content';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  const tags = new Map<string, { label: string; posts: typeof posts }>();
+
+  for (const post of posts) {
+    for (const tag of post.data.tags) {
+      const slug = tagSlug(tag);
+      if (!tags.has(slug)) tags.set(slug, { label: tag, posts: [] });
+      tags.get(slug)!.posts.push(post);
+    }
+  }
+
+  return [...tags.entries()].map(([slug, { label, posts: tagged }]) => ({
+    params: { tag: slug },
+    props: { label, slug, posts: tagged },
+  }));
+}
+
+const { label, slug, posts } = Astro.props;
+const allTags = await getTags();
+const allPosts = await getPosts();
+---
+
+<BaseLayout
+  title={tagLabel(label)}
+  description={`Posts tagged ${label}.`}
+  zone="writing"
+>
+  <div class="zone-page">
+    <PageHeader title={tagLabel(label)}>
+      <TagFilter tags={allTags} total={allPosts.length} active={slug} />
+    </PageHeader>
+
+    <ul class="post-list">
+      {posts.map((post) => <PostItem post={post} />)}
+    </ul>
+  </div>
+</BaseLayout>

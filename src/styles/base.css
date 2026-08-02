@@ -1,0 +1,550 @@
+@import './tokens.css';
+
+/* ---- Reset -------------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  min-height: 100vh;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  line-height: var(--leading-normal);
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+  flex-direction: column;
+}
+
+img,
+picture,
+svg,
+video,
+canvas {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+  line-height: var(--leading-tight);
+  text-wrap: balance;
+  font-weight: 600;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+a {
+  color: var(--link);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+a:visited {
+  color: var(--link-visited);
+}
+
+::selection {
+  background: var(--selection);
+}
+
+:focus-visible {
+  outline: 2px solid var(--link);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Skip link — visible only when focused. */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  padding: var(--space-2) var(--space-4);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.skip-link:focus {
+  left: var(--space-4);
+  top: var(--space-4);
+}
+
+/* ---- Top stripe ---------------------------------------------------------
+ * A band of colour across the very top of every page. Identical in both zones —
+ * it was briefly thinner on /blog as a zone signal, which just read as a
+ * misalignment against the other pages.
+ */
+
+.topbar {
+  display: flex;
+  width: 100%;
+  flex: 0 0 auto;
+}
+
+.topbar span {
+  height: 0.7rem;
+  flex-grow: 1;
+}
+
+.topbar span:nth-child(1) { background-color: var(--accent-vermillion); }
+.topbar span:nth-child(2) { background-color: var(--accent-orange); }
+.topbar span:nth-child(3) { background-color: var(--accent-green); }
+.topbar span:nth-child(4) { background-color: var(--accent-sky); }
+.topbar span:nth-child(5) { background-color: var(--accent-purple); }
+
+/* ---- Site chrome -------------------------------------------------------- */
+
+.site-nav {
+  width: 100%;
+  max-width: var(--measure-wide);
+  margin: 0 auto;
+  padding: var(--space-4);
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.site-nav__home {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text);
+  text-decoration: none;
+}
+
+
+.site-nav__links {
+  display: flex;
+  gap: var(--space-5);
+  list-style: none;
+  padding: 0;
+  margin-left: auto;
+  align-items: center;
+}
+
+.site-nav__links a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: var(--text-base);
+}
+
+/* Nav links underline rather than changing colour — the colour shift competed
+ * with the page content for attention on every single page. */
+.site-nav__links a:hover,
+.site-nav__links a[aria-current='page'] {
+  color: var(--text);
+  text-decoration: underline;
+}
+
+.theme-toggle {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  padding: 0.3rem 0.55rem;
+  line-height: 1;
+  color: var(--text-muted);
+  font-size: var(--text-lg);
+}
+
+.theme-toggle:hover {
+  color: var(--hover);
+  border-color: var(--hover);
+}
+
+/* Show the icon for the theme you would switch *to*. */
+.theme-toggle .icon-dark { display: none; }
+:root[data-theme='dark'] .theme-toggle .icon-dark { display: inline; }
+:root[data-theme='dark'] .theme-toggle .icon-light { display: none; }
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .theme-toggle .icon-dark { display: inline; }
+  :root:not([data-theme='light']) .theme-toggle .icon-light { display: none; }
+}
+
+.site-main {
+  flex: 1 0 auto;
+  width: 100%;
+}
+
+/* The wide container, shared by every index page in both zones so that page
+ * titles line up with the site name in the nav. Individual Posts still use the
+ * narrow `.prose-page` measure, because that is a reading column. */
+.zone-page {
+  max-width: var(--measure-wide);
+  width: 100%;
+  margin: 0 auto;
+  padding: var(--space-4);
+}
+
+/* ---- Shared index-page header -------------------------------------------
+ * Used by /blog, /projects and the tag pages so both zones introduce a section
+ * identically, at the same width.
+ */
+
+.page-header {
+  padding-top: var(--space-6);
+  padding-bottom: var(--space-5);
+}
+
+.page-header__title {
+  font-size: var(--text-h2);
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+}
+
+.page-header__title::after {
+  content: '';
+  flex: 1;
+  height: 2px;
+  background: linear-gradient(to right, var(--border), transparent);
+}
+
+.page-header__lead {
+  color: var(--text-muted);
+  font-size: var(--text-base);
+  margin-top: var(--space-3);
+  max-width: 60ch;
+}
+
+/* ---- Tag chips ----------------------------------------------------------
+ * Shared by the blog index, the tag pages and each post's meta line. The
+ * `data-tone` attribute is a stable colour slot derived from the tag name.
+ */
+
+.tag-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+}
+
+.tag-chip {
+  /* Default hue; overridden per tone below. */
+  --chip-h: var(--chip-h-9);
+
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4em;
+  font-size: var(--text-sm);
+  line-height: 1.4;
+  padding: 0.15rem 0.7rem;
+  border-radius: 999px;
+  text-decoration: none;
+  color: oklch(var(--chip-text-l) var(--chip-text-c) var(--chip-h));
+  background: oklch(var(--chip-bg-l) var(--chip-bg-c) var(--chip-h));
+  border: 1px solid oklch(var(--chip-border-l) var(--chip-border-c) var(--chip-h));
+  transition: background 140ms ease, border-color 140ms ease;
+}
+
+.tag-chip:visited {
+  color: oklch(var(--chip-text-l) var(--chip-text-c) var(--chip-h));
+}
+
+a.tag-chip:hover {
+  background: oklch(var(--chip-active-bg-l) var(--chip-active-bg-c) var(--chip-h));
+  border-color: oklch(var(--chip-text-l) var(--chip-border-c) var(--chip-h));
+}
+
+.tag-chip[aria-current='page'] {
+  background: oklch(var(--chip-active-bg-l) var(--chip-active-bg-c) var(--chip-h));
+  border-color: oklch(var(--chip-text-l) var(--chip-text-c) var(--chip-h));
+  font-weight: 600;
+}
+
+.tag-chip__count {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  opacity: 0.7;
+}
+
+/* Non-interactive chips: technologies on project cards and timeline entries. */
+.chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  list-style: none;
+  padding: 0;
+}
+
+.tag-chip--sm {
+  font-size: var(--text-xs);
+  padding: 0.1rem 0.55rem;
+}
+
+/* ---- Icons -------------------------------------------------------------- */
+
+.icon {
+  display: inline-block;
+  vertical-align: -0.15em;
+  flex: 0 0 auto;
+}
+
+/* The arrow nudges forward on hover, which reads as "this goes somewhere". */
+.icon-arrow {
+  transition: transform 160ms ease;
+}
+
+a:hover .icon-arrow,
+.project-card:hover .icon-arrow {
+  transform: translateX(3px);
+}
+
+.tag-chip[data-tone='1'] { --chip-h: var(--chip-h-1); }
+.tag-chip[data-tone='2'] { --chip-h: var(--chip-h-2); }
+.tag-chip[data-tone='3'] { --chip-h: var(--chip-h-3); }
+.tag-chip[data-tone='4'] { --chip-h: var(--chip-h-4); }
+.tag-chip[data-tone='5'] { --chip-h: var(--chip-h-5); }
+.tag-chip[data-tone='6'] { --chip-h: var(--chip-h-6); }
+.tag-chip[data-tone='7'] { --chip-h: var(--chip-h-7); }
+.tag-chip[data-tone='8'] { --chip-h: var(--chip-h-8); }
+.tag-chip[data-tone='9'] { --chip-h: var(--chip-h-9); }
+
+/* "All" is deliberately neutral — it is not a tag. */
+.tag-chip--all {
+  color: var(--text-muted);
+  background: var(--bg-subtle);
+  border-color: var(--border);
+}
+
+a.tag-chip--all:hover,
+.tag-chip--all[aria-current='page'] {
+  color: var(--text);
+  background: var(--bg-inset);
+  border-color: var(--text-faint);
+}
+
+.tag-chip--draft { --chip-h: var(--chip-h-4); }
+
+.site-footer {
+  flex: 0 0 auto;
+  border-top: 1px solid var(--border);
+  margin-top: var(--space-8);
+  padding: var(--space-5) var(--space-4);
+  color: var(--text-faint);
+  font-size: var(--text-sm);
+}
+
+.site-footer__inner {
+  max-width: var(--measure-wide);
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  justify-content: center;
+  text-align: center;
+}
+
+.site-footer a {
+  color: var(--text-muted);
+}
+
+/* ---- Code --------------------------------------------------------------
+ * Shiki runs at build time and ships no JavaScript. With dual themes it emits
+ * both palettes as CSS variables; because the theme is user-togglable we switch
+ * on [data-theme] rather than on prefers-color-scheme alone.
+ */
+
+code,
+kbd,
+samp,
+pre {
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+}
+
+:not(pre) > code {
+  background: var(--bg-inset);
+  padding: 0.15em 0.35em;
+  border-radius: 4px;
+  overflow-wrap: break-word;
+}
+
+/* Code blocks get a macOS-style window titlebar: three traffic lights and the
+ * language name.
+ *
+ * The bar and dots are drawn as background-image layers rather than
+ * pseudo-elements, because a background on a scrollable box stays put while its
+ * content scrolls — pseudo-elements would slide away with a long line. The
+ * tint is a neutral grey at low alpha, so one rule works in both themes over
+ * whichever background Shiki has set inline.
+ */
+pre.astro-code {
+  --code-bar-height: 2.15rem;
+
+  position: relative;
+  padding: calc(var(--code-bar-height) + var(--space-4)) var(--space-4)
+    var(--space-4);
+  border-radius: var(--radius);
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  line-height: 1.55;
+
+  background-image:
+    radial-gradient(circle 5.5px at 1.1rem 1.07rem, #ff5f57 98%, transparent),
+    radial-gradient(circle 5.5px at 2.35rem 1.07rem, #febc2e 98%, transparent),
+    radial-gradient(circle 5.5px at 3.6rem 1.07rem, #28c840 98%, transparent),
+    linear-gradient(
+      to bottom,
+      rgb(128 128 128 / 14%) 0 calc(var(--code-bar-height) - 1px),
+      rgb(128 128 128 / 26%) calc(var(--code-bar-height) - 1px)
+        var(--code-bar-height),
+      transparent var(--code-bar-height)
+    );
+  background-repeat: no-repeat;
+}
+
+/* The language sits beside the traffic lights, leaving the right-hand end of
+ * the bar free for the copy button. Shiki sets data-language. */
+pre.astro-code::after {
+  content: attr(data-language);
+  position: absolute;
+  top: 0;
+  left: 5.1rem;
+  height: var(--code-bar-height);
+  display: flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.04em;
+  color: var(--text-faint);
+  pointer-events: none;
+}
+
+/* ---- Copy button --------------------------------------------------------
+ * Injected by the inline script in BaseLayout. Without JavaScript the button
+ * never exists and the code block is unchanged — nothing here degrades badly.
+ */
+
+.code-copy {
+  --code-copy-height: 1.45rem;
+
+  position: absolute;
+  right: var(--space-2);
+  /* Vertically centred inside the titlebar. */
+  top: calc((var(--code-bar-height) - var(--code-copy-height)) / 2);
+  height: var(--code-copy-height);
+  display: inline-flex;
+  align-items: center;
+  padding: 0 0.55rem;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: var(--bg);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: 1.5;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 140ms ease, color 140ms ease, border-color 140ms ease;
+}
+
+/* Revealed on hover for pointer devices; always visible on touch, where there
+ * is no hover to reveal it. */
+@media (hover: hover) {
+  pre.astro-code:hover .code-copy,
+  .code-copy:focus-visible {
+    opacity: 1;
+  }
+}
+
+@media (hover: none) {
+  .code-copy {
+    opacity: 1;
+  }
+}
+
+.code-copy:hover {
+  color: var(--hover);
+  border-color: var(--hover);
+}
+
+.code-copy.is-copied {
+  color: var(--accent-green);
+  border-color: var(--accent-green);
+  opacity: 1;
+}
+
+/* `plaintext` is Shiki's fallback and says nothing worth reading. */
+pre.astro-code[data-language='plaintext']::after,
+pre.astro-code[data-language='text']::after {
+  content: '';
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .astro-code,
+  :root:not([data-theme='light']) .astro-code span {
+    color: var(--shiki-dark) !important;
+    background-color: var(--shiki-dark-bg) !important;
+    font-style: var(--shiki-dark-font-style) !important;
+    font-weight: var(--shiki-dark-font-weight) !important;
+    text-decoration: var(--shiki-dark-text-decoration) !important;
+  }
+}
+
+:root[data-theme='dark'] .astro-code,
+:root[data-theme='dark'] .astro-code span {
+  color: var(--shiki-dark) !important;
+  background-color: var(--shiki-dark-bg) !important;
+  font-style: var(--shiki-dark-font-style) !important;
+  font-weight: var(--shiki-dark-font-weight) !important;
+  text-decoration: var(--shiki-dark-text-decoration) !important;
+}
+
+/* ---- Utilities ---------------------------------------------------------- */
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}

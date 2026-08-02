@@ -1,0 +1,127 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Timeline from '../components/Timeline.astro';
+import TechCard from '../components/TechCard.astro';
+import Icon from '../components/Icon.astro';
+import { excerpt, getPostsGrouped } from '../lib/content';
+import { TECH_TYPES } from '../content.config';
+import { site } from '../site.config';
+
+const experience = await getCollection('experience');
+const tech = await getCollection('tech');
+const { featured } = await getPostsGrouped();
+
+const work = experience.filter((e) => e.data.kind === 'work');
+const education = experience.filter((e) => e.data.kind === 'education');
+const certifications = experience.filter((e) => e.data.kind === 'certification');
+
+// Cards are grouped by type so the section can be scanned rather than read.
+// Order comes from TECH_TYPES so adding a type in one place is enough.
+const sortedTech = [...tech].sort((a, b) => {
+  const byType =
+    TECH_TYPES.indexOf(a.data.type) - TECH_TYPES.indexOf(b.data.type);
+  return byType !== 0 ? byType : b.data.level - a.data.level;
+});
+---
+
+<BaseLayout zone="portfolio">
+  <div class="zone-page">
+    <section class="hero">
+      <div>
+        <p class="hero__tagline">{site.tagline}</p>
+        <h1 class="hero__name">{site.author}</h1>
+
+        {/* TODO: replace with two or three sentences in your own voice. */}
+        <p class="hero__intro">
+          I build things for the web and write about <strong>
+            how they actually work
+          </strong> — the kind of explanation that would have saved me a week when
+          I was learning it.
+        </p>
+
+        <ul class="hero__links">
+          {
+            site.socials.map((s) => (
+              <li>
+                <a href={s.href} rel="me noopener">
+                  <Icon name={s.icon} />
+                  {s.label}
+                </a>
+              </li>
+            ))
+          }
+          <li>
+            <a href="/blog">
+              Read the blog
+              <Icon name="arrow-right" class="icon-arrow" />
+            </a>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    {
+      featured.length > 0 && (
+        <section class="section">
+          <h2 class="section__title">Selected writing</h2>
+          <ul class="project-grid">
+            {featured.map((post) => (
+              <li class="project-card">
+                <p class="project-card__year">
+                  {post.data.pubDate.getFullYear()}
+                </p>
+                <h3 class="project-card__title">
+                  <a href={`/blog/${post.id}`}>{post.data.title}</a>
+                </h3>
+                <p class="project-card__blurb">{excerpt(post, 140)}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    {
+      certifications.length > 0 && (
+        <section class="section" id="certifications">
+          <h2 class="section__title">Certifications</h2>
+          <Timeline entries={certifications} kind="certification" />
+        </section>
+      )
+    }
+
+    <section class="section" id="experience">
+      <h2 class="section__title">Experience</h2>
+      {
+        work.length > 0 ? (
+          <Timeline entries={work} kind="work" />
+        ) : (
+          <p style="color: var(--text-muted)">
+            Add entries to <code>src/data/experience.yaml</code>.
+          </p>
+        )
+      }
+    </section>
+
+    {
+      education.length > 0 && (
+        <section class="section" id="education">
+          <h2 class="section__title">Education</h2>
+          <Timeline entries={education} kind="education" />
+        </section>
+      )
+    }
+
+    <section class="section" id="stack">
+      <h2 class="section__title">Stack</h2>
+      <p class="section__lead">
+        Things I reach for, and roughly how well I know them. Five pips means I
+        could teach it; one means I have shipped with it once and lived.
+      </p>
+      <ul class="card-grid">
+        {sortedTech.map((card) => <TechCard card={card} />)}
+      </ul>
+    </section>
+  </div>
+</BaseLayout>

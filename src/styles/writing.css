@@ -1,0 +1,314 @@
+/*
+ * The Writing zone: austere, typography-led, near-monochrome.
+ *
+ * Derived from the measured proportions of samwho.dev — 780px measure, 14pt
+ * body, 3rem/2rem/1.5rem heading scale, padding-based paragraph rhythm.
+ * Prose Posts here ship zero JavaScript.
+ */
+
+/* The larger reading size is scoped to the article itself, NOT to the whole
+ * body. Applying it at [data-zone='writing'] scaled the nav and footer too,
+ * which made the header sit at a different height on /blog than on the
+ * portfolio pages. */
+.prose-page {
+  max-width: var(--measure);
+  width: 100%;
+  margin: 0 auto;
+  padding: var(--space-4);
+  font-size: 14pt;
+}
+
+/* ---- Post header -------------------------------------------------------- */
+
+.post-header {
+  padding-top: var(--space-6);
+  padding-bottom: var(--space-4);
+}
+
+.post-header h1 {
+  font-size: var(--text-h1);
+  text-align: center;
+  text-wrap: pretty;
+}
+
+.post-meta {
+  margin-top: var(--space-4);
+  text-align: center;
+  color: var(--text-faint);
+  font-size: var(--text-sm);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-3);
+  justify-content: center;
+  align-items: center;
+}
+
+.post-meta__updated {
+  font-style: italic;
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  list-style: none;
+  padding: 0;
+  justify-content: center;
+}
+
+.draft-banner,
+.notice-banner {
+  max-width: var(--measure);
+  margin: var(--space-4) auto 0;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius);
+  font-size: var(--text-sm);
+}
+
+.draft-banner {
+  border: 1px dashed var(--accent-vermillion);
+  color: var(--accent-vermillion);
+}
+
+/* Quieter than the draft banner — unlisted is a deliberate state, not a
+ * warning. */
+.notice-banner {
+  border: 1px solid var(--border);
+  background: var(--bg-subtle);
+  color: var(--text-muted);
+}
+
+/* ---- Prose -------------------------------------------------------------- */
+
+/* Section headings get a deliberately larger gap above them than anything else
+ * in the flow, so a new section is obvious while scrolling without needing a
+ * rule or a colour change to announce it. */
+.prose h2 {
+  font-size: var(--text-h2);
+  padding-top: 2.6rem;
+}
+
+/* Subsections stay closer, so the h2/h3 hierarchy reads by spacing alone. */
+.prose h3 {
+  font-size: var(--text-h3);
+  padding-top: var(--space-5);
+}
+
+/* No leading gap when a heading opens the article. */
+.prose > :first-child {
+  padding-top: 0;
+}
+
+.prose h4 {
+  font-size: var(--text-lg);
+  padding-top: var(--space-4);
+}
+
+/* Rhythm comes from padding rather than margins, so adjacent blocks do not
+ * collapse and the spacing stays predictable around figures and code. */
+.prose p,
+.prose ul,
+.prose ol,
+.prose blockquote,
+.prose figure,
+.prose table {
+  padding-top: var(--space-3);
+  padding-bottom: var(--space-3);
+}
+
+.prose ul,
+.prose ol {
+  padding-left: var(--space-5);
+}
+
+.prose li {
+  padding-top: 0.15rem;
+  padding-bottom: 0.15rem;
+}
+
+.prose img {
+  max-width: 95%;
+  margin: var(--space-4) auto;
+  border-radius: var(--radius);
+}
+
+.prose figure figcaption {
+  text-align: center;
+  color: var(--text-faint);
+  font-size: var(--text-sm);
+  font-style: italic;
+}
+
+.prose blockquote {
+  font-family: var(--font-heading);
+  font-style: italic;
+  background: var(--bg-subtle);
+  border-left: 10px solid var(--accent-sky);
+  padding-left: 1em;
+  padding-right: 0.7em;
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+
+.prose blockquote p:last-child {
+  padding-bottom: 0;
+}
+
+.prose hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: var(--space-6) auto;
+  width: 40%;
+}
+
+.prose table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: var(--text-sm);
+}
+
+.prose th,
+.prose td {
+  border: 1px solid var(--border);
+  padding: var(--space-2) var(--space-3);
+  text-align: left;
+}
+
+.prose thead {
+  background: var(--bg-subtle);
+}
+
+/* Wide content scrolls inside its own box; the page never scrolls sideways. */
+.prose .table-scroll,
+.prose pre {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+/* Code blocks were the one block element with no vertical rhythm, so their
+ * titlebar sat flush against whatever came before it. Margin rather than
+ * padding, because the padding is already carrying the titlebar. */
+.prose pre {
+  margin-block: var(--space-5);
+}
+
+/* Slightly more room after a heading, since the traffic lights sit right at
+ * the top edge of the block and need air to read as a separate window. */
+.prose :is(h2, h3, h4) + pre {
+  margin-top: var(--space-4);
+}
+
+/* Anchored headings — the link appears on hover, and is always reachable by
+ * keyboard without cluttering the reading experience. */
+.prose :is(h2, h3, h4) {
+  scroll-margin-top: var(--space-5);
+}
+
+/* ---- Footnotes ----------------------------------------------------------
+ * Standard markdown footnotes, rendered at the foot of the page. Deliberately
+ * not margin sidenotes — see the note in README.
+ */
+
+.prose .footnotes {
+  margin-top: var(--space-7);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+.prose .footnotes h2 {
+  font-size: var(--text-lg);
+  padding-top: 0;
+}
+
+/* ---- Wide figures -------------------------------------------------------
+ * A diagram or screenshot may break the reading measure when detail matters.
+ * Add the class in raw HTML around an image; the page never scrolls sideways.
+ */
+
+.figure-wide {
+  width: min(100vw - 2rem, var(--measure-wide));
+  margin-inline: calc(50% - min(50vw - 1rem, var(--measure-wide) / 2));
+  padding-top: var(--space-4);
+  padding-bottom: var(--space-4);
+}
+
+.figure-wide img {
+  max-width: 100%;
+}
+
+/* ---- Post list ----------------------------------------------------------
+ * Title, then description, then date and tags — separated by a rule. No
+ * Featured grouping; `featured` only drives the home page.
+ */
+
+.post-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.post-item {
+  padding-block: var(--space-5);
+  border-bottom: 1px solid var(--border);
+}
+
+.post-item:first-child {
+  padding-top: var(--space-2);
+}
+
+.post-item__title {
+  font-size: var(--text-h3);
+  line-height: 1.25;
+}
+
+.post-item__title a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.post-item__title a:hover {
+  color: var(--hover);
+  text-decoration: none;
+}
+
+/* Sits on the text baseline beside the title. The previous version used
+ * vertical-align: super, which floated it away from the words. */
+.post-item__star {
+  color: var(--accent-orange);
+  font-size: 0.7em;
+  margin-left: 0.15em;
+  line-height: 1;
+}
+
+.post-item__excerpt {
+  color: var(--text-muted);
+  font-size: var(--text-base);
+  margin-top: var(--space-2);
+  max-width: 68ch;
+}
+
+.post-item__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-3);
+  align-items: center;
+  margin-top: var(--space-3);
+  color: var(--text-faint);
+  font-size: var(--text-sm);
+}
+
+@media (max-width: 640px) {
+  .prose-page {
+    font-size: 12.5pt;
+  }
+
+  .post-header h1 {
+    font-size: 2.1rem;
+  }
+
+  .prose h2 {
+    font-size: 1.6rem;
+  }
+}

@@ -1,0 +1,86 @@
+# Work, education and certifications all live here, separated by `kind`.
+# The home page renders one timeline per kind.
+#
+# kind   — work | education | certification (defaults to work)
+# start  — YYYY-MM, or YYYY where only the year is meaningful
+# end    — omit for a position still held; ignored for certifications
+#
+# Consecutive work entries at the same company are grouped under one heading
+# with a combined duration, so multiple roles at one employer read as a
+# progression rather than as unrelated jobs.
+
+# ---- Work -----------------------------------------------------------------
+
+- id: ifast-it-specialist
+  kind: work
+  company: iFAST Global Hub AI
+  role: IT Specialist
+  employment: Full-time
+  start: 2025-08
+  end: 2026-07
+  # TODO: a sentence on what the team does and what you were responsible for.
+  blurb: >-
+    Write one or two sentences here for someone outside the company.
+  highlights: []
+  tech: []
+
+- id: ifast-angular-java-developer
+  kind: work
+  company: iFAST Global Hub AI
+  role: Angular and Java Developer
+  employment: Internship
+  start: 2025-02
+  end: 2025-07
+  # TODO: a sentence on what you built.
+  blurb: >-
+    Write one or two sentences here for someone outside the company.
+  tech:
+    - Git
+    - Linux
+    - TypeScript
+    - Angular
+    - Java
+    - Spring
+
+- id: enlliance-web-developer
+  kind: work
+  company: Enlliance Management Sdn. Bhd.
+  role: Web Developer Intern
+  employment: Internship
+  # NOTE: you wrote "Oct 2021 - Jan 2021", which ends before it starts.
+  # Assumed Jan 2022 — correct this if the real dates differ.
+  start: 2021-10
+  end: 2022-01
+  # TODO: a sentence on what you built.
+  blurb: >-
+    Write one or two sentences here for someone outside the company.
+  tech:
+    - Git
+    - JavaScript
+    - React
+    - Python
+    - Django
+
+# ---- Education ------------------------------------------------------------
+
+- id: tarumt-degree
+  kind: education
+  company: Tunku Abdul Rahman University of Management and Technology
+  role: Bachelor of Software Engineering
+  start: 2023
+  end: 2025
+
+- id: tarumt-diploma
+  kind: education
+  company: Tunku Abdul Rahman University of Management and Technology
+  role: Diploma in Computer Science
+  start: 2020
+  end: 2022
+
+# ---- Certifications -------------------------------------------------------
+- id: aws-solutions-architect
+  kind: certification
+  company: Amazon Web Services
+  role: AWS Certified Solutions Architect
+  start: 2026-08
+  # url: https://www.credly.com/badges/…   ← add your credential link

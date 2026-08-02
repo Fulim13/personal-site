@@ -1,0 +1,171 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import {
+  byMostRecent,
+  formatDuration,
+  formatMonth,
+  monthsBetween,
+} from '../site.config';
+import { techTone } from '../lib/content';
+
+type Entry = CollectionEntry<'experience'>;
+
+interface Props {
+  entries: Entry[];
+  kind: 'work' | 'education' | 'certification';
+}
+
+const { entries, kind } = Astro.props;
+
+const sorted = [...entries].sort((a, b) => byMostRecent(a.data, b.data));
+
+/**
+ * Group consecutive entries at the same organisation, so two roles at one
+ * employer read as a progression rather than as unrelated jobs.
+ *
+ * The organisation name is ALWAYS the heading, even for a group of one. An
+ * earlier version only showed it on top when grouped and put it under the role
+ * title otherwise, which made the section look inconsistent.
+ */
+type Group = { company: string; items: Entry[] };
+
+const groups: Group[] = [];
+for (const entry of sorted) {
+  const last = groups.at(-1);
+  if (last && last.company === entry.data.company) {
+    last.items.push(entry);
+  } else {
+    groups.push({ company: entry.data.company, items: [entry] });
+  }
+}
+
+/** Earliest start to latest end across a whole group. Work only. */
+function groupDuration(items: Entry[]): string {
+  const starts = items.map((i) => i.data.start).sort();
+  const ongoing = items.some((i) => !i.data.end);
+  const ends = items.map((i) => i.data.end).filter(Boolean).sort();
+  return formatDuration(
+    monthsBetween(starts[0]!, ongoing ? undefined : (ends.at(-1) as string)),
+  );
+}
+
+const isCert = kind === 'certification';
+---
+
+<ol class="timeline">
+  {
+    groups.map((group) => (
+      <li class="timeline__group">
+        <p class="timeline__org">
+          <span class="timeline__org-name">{group.company}</span>
+          {/* A combined total only makes sense across several roles, and
+              tenure is a work concept — a degree is described by its years. */}
+          {kind === 'work' && group.items.length > 1 && (
+            <span class="timeline__org-duration">
+              {groupDuration(group.items)}
+            </span>
+          )}
+        </p>
+
+        <ol class="timeline__roles">
+          {group.items.map((entry) => {
+            const {
+              role,
+              employment,
+              start,
+              end,
+              location,
+              blurb,
+              highlights,
+              tech,
+              url,
+            } = entry.data;
+
+            return (
+              <li
+                class:list={[
+                  'timeline__item',
+                  !end && !isCert && 'timeline__item--current',
+                  `timeline__item--${kind}`,
+                ]}
+              >
+                <span class="timeline__dot" aria-hidden="true" />
+
+                {/* The role is the anchor. Everything factual about it —
+                    contract type, dates, duration, place — collapses into one
+                    quiet line beneath, rather than stacking three small ones. */}
+                <h3 class="timeline__role">
+                  {url ? (
+                    <a href={url} rel="noopener">
+                      {role}
+                    </a>
+                  ) : (
+                    role
+                  )}
+                </h3>
+
+                <p class="timeline__meta">
+                  {employment && (
+                    <>
+                      {employment}
+                      <span class="sep">·</span>
+                    </>
+                  )}
+
+                  {isCert ? (
+                    <>
+                      Issued <time datetime={start}>{formatMonth(start)}</time>
+                    </>
+                  ) : (
+                    <>
+                      <time datetime={start}>{formatMonth(start)}</time>
+                      {' — '}
+                      {end ? (
+                        <time datetime={end}>{formatMonth(end)}</time>
+                      ) : (
+                        'Present'
+                      )}
+                      {kind === 'work' && (
+                        <>
+                          <span class="sep">·</span>
+                          {formatDuration(monthsBetween(start, end))}
+                        </>
+                      )}
+                    </>
+                  )}
+
+                  {location && (
+                    <>
+                      <span class="sep">·</span>
+                      {location}
+                    </>
+                  )}
+                </p>
+
+                {blurb && <p class="timeline__blurb">{blurb}</p>}
+
+                {highlights.length > 0 && (
+                  <ul class="timeline__highlights">
+                    {highlights.map((h) => (
+                      <li>{h}</li>
+                    ))}
+                  </ul>
+                )}
+
+                {tech.length > 0 && (
+                  <ul class="chip-list" aria-label="Technologies used">
+                    {tech.map((t) => (
+                      <li class="tag-chip tag-chip--sm" data-tone={techTone(t)}>
+                        {t}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            );
+          })}
+        </ol>
+      </li>
+    ))
+  }
+</ol>

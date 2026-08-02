@@ -1,0 +1,74 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getProjects, techTone } from '../../lib/content';
+import Icon from '../../components/Icon.astro';
+
+export async function getStaticPaths() {
+  const projects = await getProjects();
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+const { title, blurb, year, tech, repo, url, post } = project.data;
+---
+
+<BaseLayout
+  title={title}
+  description={blurb}
+  zone="portfolio"
+  ogType="article"
+>
+  <div class="zone-page">
+    <article class="project-page">
+      <header class="project-page__header">
+        <p class="project-card__year">{year}</p>
+        <h1>{title}</h1>
+        <p class="hero__intro" style="margin-top: var(--space-3)">{blurb}</p>
+
+        {
+          tech.length > 0 && (
+            <ul
+              class="chip-list"
+              style="margin-top: var(--space-4)"
+              aria-label="Built with"
+            >
+              {tech.map((t) => (
+                <li class="tag-chip tag-chip--sm" data-tone={techTone(t)}>
+                  {t}
+                </li>
+              ))}
+            </ul>
+          )
+        }
+
+        {
+          (repo || url || post) && (
+            <p class="project-card__links" style="margin-top: var(--space-4)">
+              {url && <a href={url} rel="noopener">Live</a>}
+              {repo && <a href={repo} rel="noopener">Source</a>}
+              {post && (
+                <a href={`/blog/${post}`}>
+                  Read the write-up
+                  <Icon name="arrow-right" class="icon-arrow" />
+                </a>
+              )}
+            </p>
+          )
+        }
+      </header>
+
+      <div class="prose">
+        <Content />
+      </div>
+
+      <p style="margin-top: var(--space-7)">
+        <a href="/projects">← All projects</a>
+      </p>
+    </article>
+  </div>
+</BaseLayout>

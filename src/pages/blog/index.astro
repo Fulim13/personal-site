@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import PostItem from '../../components/PostItem.astro';
+import TagFilter from '../../components/TagFilter.astro';
+import { getPosts, getTags } from '../../lib/content';
+
+// One flat list, newest first — no Featured split. `featured` still drives the
+// "Selected writing" section on the home page.
+const posts = await getPosts();
+const tags = await getTags();
+---
+
+<BaseLayout
+  title="Blog"
+  description="Writing about how software works — explanations, notes, and the occasional deep dive."
+  zone="writing"
+>
+  <div class="zone-page">
+    <PageHeader title="Blog">
+      <TagFilter tags={tags} total={posts.length} />
+    </PageHeader>
+
+    {
+      posts.length > 0 ? (
+        <ul class="post-list">
+          {posts.map((post) => (
+            <PostItem post={post} />
+          ))}
+        </ul>
+      ) : (
+        <p style="color: var(--text-muted)">
+          Nothing published yet. Add a markdown file to
+          <code>src/content/posts/</code> and it appears here.
+        </p>
+      )
+    }
+  </div>
+</BaseLayout>

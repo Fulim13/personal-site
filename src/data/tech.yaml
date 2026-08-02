@@ -1,0 +1,140 @@
+# Tech Cards.
+#
+# type   — one of: language, framework, runtime, data, messaging, infra,
+#          tooling, testing, design, practice. Each maps to a card accent.
+# glyph  — one or two characters, or an emoji. Deliberately not an image, so
+#          the page stays asset-free.
+# level  — 1..5, drawn as pips. Five means you could teach it.
+# flavour— the italic line at the bottom of the card. It is the part people
+#          actually read, so keep it short and a little funny.
+#
+# TODO: `level`, `years` and `flavour` below are placeholders — only you know
+# the real numbers. Adjust them before launch.
+
+# ---- Languages ------------------------------------------------------------
+
+- id: java
+  name: Java
+  type: language
+  glyph: ☕
+  level: 4
+  years: 5
+  flavour: Verbose, predictable, and still running the money.
+
+- id: go
+  name: Go
+  type: language
+  glyph: Go
+  level: 4
+  years: 3
+  flavour: Fewer ways to be clever, which turns out to be the feature.
+
+- id: typescript
+  name: TypeScript
+  type: language
+  glyph: TS
+  level: 4
+  years: 4
+  flavour: Argues with me for ten minutes, then saves me a weekend.
+  featured: true
+
+- id: javascript
+  name: JavaScript
+  type: language
+  glyph: JS
+  level: 4
+  years: 6
+  flavour: Was here first and has no intention of leaving.
+
+# ---- Frameworks -----------------------------------------------------------
+
+- id: spring
+  name: Spring
+  type: framework
+  glyph: 🍃
+  level: 4
+  years: 4
+  flavour: Wires everything together, then tells you about it in the stack trace.
+  featured: true
+
+- id: react
+  name: React
+  type: framework
+  glyph: ⚛
+  level: 4
+  years: 4
+  flavour: Knows exactly which effect is firing twice, and why.
+
+- id: angular
+  name: Angular
+  type: framework
+  glyph: 🅰
+  level: 3
+  years: 2
+  flavour: Opinionated about everything, which saves the argument later.
+
+# ---- Data -----------------------------------------------------------------
+
+- id: postgres
+  name: PostgreSQL
+  type: data
+  glyph: 🐘
+  level: 4
+  years: 5
+  flavour: Has quietly solved the problem you were about to add a service for.
+  featured: true
+
+# ---- Messaging ------------------------------------------------------------
+
+- id: kafka
+  name: Apache Kafka
+  type: messaging
+  glyph: 📨
+  level: 4
+  years: 3
+  flavour: A log you can replay, which fixes more outages than it causes.
+  featured: true
+
+- id: rabbitmq
+  name: RabbitMQ
+  type: messaging
+  glyph: 🐇
+  level: 3
+  years: 3
+  flavour: Routes anything, as long as you drew the exchange diagram first.
+
+# ---- Infrastructure -------------------------------------------------------
+
+- id: docker
+  name: Docker
+  type: infra
+  glyph: 🐳
+  level: 4
+  years: 5
+  flavour: Works on my machine, and now on yours too.
+
+- id: kubernetes
+  name: Kubernetes
+  type: infra
+  glyph: ☸
+  level: 3
+  years: 3
+  flavour: Restarts the pod. Restarts the pod. Restarts the pod.
+
+- id: aws
+  name: AWS
+  type: infra
+  glyph: ☁
+  level: 3
+  years: 4
+  flavour: Two hundred services, and you will use nine of them.
+
+# ---- Tooling --------------------------------------------------------------
+
+- id: git
+  name: Git
+  type: tooling
+  glyph: ⑂
+  level: 4
+  years: 6
+  flavour: Rebases interactively and sleeps fine afterwards.
