@@ -220,7 +220,7 @@
     max(var(--space-4), env(safe-area-inset-left));
   background: rgb(0 0 0 / 0.86);
   cursor: zoom-out;
-  touch-action: none;
+  overflow: auto;
 }
 
 .image-lightbox img {
@@ -230,9 +230,39 @@
   height: auto;
   object-fit: contain;
   cursor: default;
-  touch-action: pinch-zoom;
   border-radius: var(--radius);
   box-shadow: 0 1rem 3rem rgb(0 0 0 / 0.35);
+  transform-origin: center;
+  transition: transform 140ms ease;
+}
+
+.image-lightbox__controls {
+  position: absolute;
+  bottom: max(var(--space-4), env(safe-area-inset-bottom));
+  left: 50%;
+  display: flex;
+  gap: 0.25rem;
+  transform: translateX(-50%);
+}
+
+.image-lightbox__controls button,
+.image-lightbox__close {
+  border: 1px solid rgb(255 255 255 / 0.55);
+  background: rgb(0 0 0 / 0.55);
+  color: white;
+  cursor: pointer;
+}
+
+.image-lightbox__controls button {
+  min-width: 2.5rem;
+  min-height: 2.5rem;
+  padding: 0.35rem 0.65rem;
+  font: inherit;
+}
+
+.image-lightbox__controls button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
 }
 
 .image-lightbox__close {
@@ -241,13 +271,9 @@
   right: var(--space-4);
   width: 2.5rem;
   height: 2.5rem;
-  border: 1px solid rgb(255 255 255 / 0.55);
   border-radius: 50%;
-  background: rgb(0 0 0 / 0.35);
-  color: white;
   font-size: var(--text-xl);
   line-height: 1;
-  cursor: pointer;
 }
 
 @supports (top: env(safe-area-inset-top)) {

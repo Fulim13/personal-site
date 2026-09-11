@@ -222,7 +222,12 @@ const currentYear = new Date().getFullYear();
           var overlay = document.createElement('div');
           var enlarged = document.createElement('img');
           var close = document.createElement('button');
+          var controls = document.createElement('div');
+          var zoomOut = document.createElement('button');
+          var zoomReset = document.createElement('button');
+          var zoomIn = document.createElement('button');
           var previousOverflow = document.body.style.overflow;
+          var zoom = 1;
 
           overlay.className = 'image-lightbox';
           overlay.setAttribute('role', 'dialog');
@@ -234,6 +239,43 @@ const currentYear = new Date().getFullYear();
           close.type = 'button';
           close.textContent = '×';
           close.setAttribute('aria-label', 'Close enlarged image');
+          controls.className = 'image-lightbox__controls';
+          controls.setAttribute('aria-label', 'Image zoom controls');
+
+          function updateZoom() {
+            enlarged.style.transform = `scale(${zoom})`;
+            zoomOut.disabled = zoom <= 1;
+            zoomReset.disabled = zoom === 1;
+            zoomIn.disabled = zoom >= 4;
+            enlarged.setAttribute('aria-label', `Enlarged image, zoom ${zoom}x`);
+          }
+
+          function changeZoom(amount) {
+            zoom = Math.min(4, Math.max(1, Math.round((zoom + amount) * 10) / 10));
+            updateZoom();
+          }
+
+          zoomOut.type = 'button';
+          zoomOut.textContent = '−';
+          zoomOut.setAttribute('aria-label', 'Zoom out');
+          zoomOut.addEventListener('click', function () {
+            changeZoom(-0.5);
+          });
+
+          zoomReset.type = 'button';
+          zoomReset.textContent = 'Reset';
+          zoomReset.setAttribute('aria-label', 'Reset image zoom');
+          zoomReset.addEventListener('click', function () {
+            zoom = 1;
+            updateZoom();
+          });
+
+          zoomIn.type = 'button';
+          zoomIn.textContent = '+';
+          zoomIn.setAttribute('aria-label', 'Zoom in');
+          zoomIn.addEventListener('click', function () {
+            changeZoom(0.5);
+          });
 
           function closeLightbox() {
             document.body.style.overflow = previousOverflow;
@@ -244,16 +286,28 @@ const currentYear = new Date().getFullYear();
 
           function onKeydown(event) {
             if (event.key === 'Escape') closeLightbox();
+            if (event.key === '+' || event.key === '=') changeZoom(0.5);
+            if (event.key === '-') changeZoom(-0.5);
+            if (event.key === '0') {
+              zoom = 1;
+              updateZoom();
+            }
           }
 
           close.addEventListener('click', closeLightbox);
+          enlarged.addEventListener('wheel', function (event) {
+            event.preventDefault();
+            changeZoom(event.deltaY < 0 ? 0.5 : -0.5);
+          }, { passive: false });
           overlay.addEventListener('click', function (event) {
             if (event.target === overlay) closeLightbox();
           });
           document.addEventListener('keydown', onKeydown);
-          overlay.append(enlarged, close);
+          controls.append(zoomOut, zoomReset, zoomIn);
+          overlay.append(enlarged, controls, close);
           document.body.appendChild(overlay);
           document.body.style.overflow = 'hidden';
+          updateZoom();
           close.focus();
         }
 
