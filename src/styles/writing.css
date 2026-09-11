@@ -367,10 +367,12 @@
 
 @media (max-width: 640px) {
   .post-layout {
-    display: block;
+    display: flex;
+    flex-direction: column;
   }
 
   .post-toc {
+    order: -1;
     position: static;
     max-height: none;
     margin: 0 var(--space-4) var(--space-4);
