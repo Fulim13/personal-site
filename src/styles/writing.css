@@ -286,9 +286,14 @@
 }
 
 .prose table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
   border-collapse: collapse;
-  width: 100%;
+  width: max-content;
+  min-width: 100%;
   font-size: var(--text-sm);
+  white-space: nowrap;
 }
 
 .prose th,
