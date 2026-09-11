@@ -209,18 +209,28 @@
   z-index: 200;
   display: grid;
   place-items: center;
-  padding: var(--space-4);
+  /* `vh` includes mobile browser chrome. Prefer the dynamic viewport so the
+   * overlay and image stay inside the actually visible area as the chrome
+   * expands or collapses. The small viewport is the safe fallback. */
+  height: 100svh;
+  height: 100dvh;
+  padding: max(var(--space-4), env(safe-area-inset-top))
+    max(var(--space-4), env(safe-area-inset-right))
+    max(var(--space-4), env(safe-area-inset-bottom))
+    max(var(--space-4), env(safe-area-inset-left));
   background: rgb(0 0 0 / 0.86);
   cursor: zoom-out;
+  touch-action: none;
 }
 
 .image-lightbox img {
   max-width: 100%;
-  max-height: calc(100vh - 2 * var(--space-4));
+  max-height: 100%;
   width: auto;
   height: auto;
   object-fit: contain;
   cursor: default;
+  touch-action: pinch-zoom;
   border-radius: var(--radius);
   box-shadow: 0 1rem 3rem rgb(0 0 0 / 0.35);
 }
@@ -238,6 +248,13 @@
   font-size: var(--text-xl);
   line-height: 1;
   cursor: pointer;
+}
+
+@supports (top: env(safe-area-inset-top)) {
+  .image-lightbox__close {
+    top: max(var(--space-4), env(safe-area-inset-top));
+    right: max(var(--space-4), env(safe-area-inset-right));
+  }
 }
 
 .prose figure figcaption {
