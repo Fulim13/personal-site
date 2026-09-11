@@ -18,9 +18,6 @@
   employment: Full-time
   start: 2025-08
   end: 2026-07
-  # TODO: a sentence on what the team does and what you were responsible for.
-  blurb: >-
-    Write one or two sentences here for someone outside the company.
   highlights: []
   tech: []
 
@@ -31,9 +28,11 @@
   employment: Internship
   start: 2025-02
   end: 2025-07
-  # TODO: a sentence on what you built.
   blurb: >-
-    Write one or two sentences here for someone outside the company.
+    Built features for fintech products, digital banking, and back-office
+    systems with Angular and Spring CRUD.
+    Supported IT operations and helped maintain internal systems and services.
+
   tech:
     - Git
     - Linux
@@ -47,13 +46,12 @@
   company: Enlliance Management Sdn. Bhd.
   role: Web Developer Intern
   employment: Internship
-  # NOTE: you wrote "Oct 2021 - Jan 2021", which ends before it starts.
-  # Assumed Jan 2022 — correct this if the real dates differ.
   start: 2021-10
   end: 2022-01
-  # TODO: a sentence on what you built.
   blurb: >-
-    Write one or two sentences here for someone outside the company.
+    Built utility functions such as pagination, password changes, member card
+    appearance uploads (GIFs), and favourites with React for the frontend and
+    Django for the backend. Also wrote CSS for a course-selling landing page.
   tech:
     - Git
     - JavaScript
@@ -82,5 +80,5 @@
   kind: certification
   company: Amazon Web Services
   role: AWS Certified Solutions Architect
-  start: 2026-08
-  # url: https://www.credly.com/badges/…   ← add your credential link
+  start: 2026-09
+  url: https://www.credly.com/badges/24c363ee-e2d3-4daf-8961-ce8bc713c04a/public_url

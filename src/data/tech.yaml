@@ -8,9 +8,6 @@
 # flavour— the italic line at the bottom of the card. It is the part people
 #          actually read, so keep it short and a little funny.
 #
-# TODO: `level`, `years` and `flavour` below are placeholders — only you know
-# the real numbers. Adjust them before launch.
-
 # ---- Languages ------------------------------------------------------------
 
 - id: java
@@ -85,15 +82,6 @@
   featured: true
 
 # ---- Messaging ------------------------------------------------------------
-
-- id: kafka
-  name: Apache Kafka
-  type: messaging
-  glyph: 📨
-  level: 4
-  years: 3
-  flavour: A log you can replay, which fixes more outages than it causes.
-  featured: true
 
 - id: rabbitmq
   name: RabbitMQ

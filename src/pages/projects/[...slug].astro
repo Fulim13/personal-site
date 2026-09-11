@@ -14,7 +14,7 @@ export async function getStaticPaths() {
 
 const { project } = Astro.props;
 const { Content } = await render(project);
-const { title, blurb, year, tech, repo, url, post } = project.data;
+const { title, blurb, year, tech, repo, url, post, sourceOnly } = project.data;
 ---
 
 <BaseLayout
@@ -47,11 +47,11 @@ const { title, blurb, year, tech, repo, url, post } = project.data;
         }
 
         {
-          (repo || url || post) && (
+          (repo || (!sourceOnly && (url || post))) && (
             <p class="project-card__links" style="margin-top: var(--space-4)">
-              {url && <a href={url} rel="noopener">Live</a>}
+              {!sourceOnly && url && <a href={url} rel="noopener">Live</a>}
               {repo && <a href={repo} rel="noopener">Source</a>}
-              {post && (
+              {!sourceOnly && post && (
                 <a href={`/blog/${post}`}>
                   Read the write-up
                   <Icon name="arrow-right" class="icon-arrow" />

@@ -3,10 +3,10 @@ title: JPEG
 blurb: A walk through how JPEG compression actually works, built as a portfolio piece.
 year: 2025
 featured: true
+sourceOnly: true
 tech:
   - Python
 repo: https://github.com/Fulim13/jpeg
-url: https://fulim13.github.io/jpeg
 ---
 
 > **TODO:** you gave me the repository link but not the description — I have

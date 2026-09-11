@@ -512,25 +512,6 @@
   font-size: var(--text-h3);
 }
 
-.project-card__title a {
-  color: var(--text);
-  text-decoration: none;
-}
-
-/* The title's link is stretched over the whole card, so clicking anywhere that
- * is not another link opens the project. Live/Source/Read more sit above it. */
-.project-card__title a::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-}
-
-.project-card:hover .project-card__title a,
-.project-card:focus-within .project-card__title a {
-  color: var(--hover);
-}
-
 .project-card__blurb {
   color: var(--text-muted);
   font-size: var(--text-base);

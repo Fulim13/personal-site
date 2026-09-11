@@ -40,7 +40,7 @@
   --radius-lg: 14px;
 
   /* Reading measure for the Writing zone. Matches the reference site. */
-  --measure: 780px;
+  --measure: 850px;
   /* The Portfolio zone is grid-based and needs more room. */
   --measure-wide: 1080px;
 
@@ -106,6 +106,7 @@
      changes colour on hover uses this, so hover feedback is never orange in
      one place and blue in another. */
   --hover: #d55e00;
+  --heading-purple: #8839ef; /* Catppuccin Latte mauve */
 
   /* Chip lightness/chroma. Only the hue varies per tone. */
   --chip-text-l: 0.46;
@@ -143,6 +144,7 @@
     --shadow: 0 1px 2px rgb(0 0 0 / 30%), 0 6px 20px rgb(0 0 0 / 30%);
 
     --hover: #f0904a;
+    --heading-purple: #cba6f7; /* Catppuccin Mocha mauve */
 
     --chip-text-l: 0.82;
     --chip-text-c: 0.095;
@@ -174,6 +176,7 @@
   --shadow: 0 1px 2px rgb(0 0 0 / 30%), 0 6px 20px rgb(0 0 0 / 30%);
 
   --hover: #f0904a;
+  --heading-purple: #cba6f7; /* Catppuccin Mocha mauve */
 
   --chip-text-l: 0.82;
   --chip-text-c: 0.095;

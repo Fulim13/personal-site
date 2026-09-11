@@ -17,7 +17,7 @@ from pathlib import Path
 
 # Keep these in step with src/site.config.ts
 NAME = "Fu Lim"
-TAGLINE = "Backend engineer"
+TAGLINE = "Backend Engineer"
 BLURB = "Projects, career, and writing about how software works."
 
 W, H = 1200, 630

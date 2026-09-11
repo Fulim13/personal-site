@@ -1,21 +1,20 @@
 ---
 import type { Project } from '../lib/content';
 import { techTone } from '../lib/content';
-import Icon from './Icon.astro';
 
 interface Props {
   project: Project;
 }
 
 const { project } = Astro.props;
-const { title, blurb, year, tech, repo, url } = project.data;
+const { title, blurb, year, tech, repo, url, sourceOnly } = project.data;
 ---
 
 <li class="project-card">
   <p class="project-card__year">{year}</p>
 
   <h2 class="project-card__title">
-    <a href={`/projects/${project.id}`}>{title}</a>
+    {title}
   </h2>
 
   <p class="project-card__blurb">{blurb}</p>
@@ -32,14 +31,9 @@ const { title, blurb, year, tech, repo, url } = project.data;
     )
   }
 
-  {/* Live and Source render only when present in frontmatter. "Read more"
-      always appears, since every Project has a detail page. */}
+  {/* Project cards expose external links only. */}
   <p class="project-card__links">
-    {url && <a href={url} rel="noopener">Live</a>}
+    {!sourceOnly && url && <a href={url} rel="noopener">Live</a>}
     {repo && <a href={repo} rel="noopener">Source</a>}
-    <a class="project-card__more" href={`/projects/${project.id}`}>
-      Read more
-      <Icon name="arrow-right" class="icon-arrow" />
-    </a>
   </p>
 </li>

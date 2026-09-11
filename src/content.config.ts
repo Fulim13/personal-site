@@ -50,6 +50,8 @@ const projects = defineCollection({
     tech: z.array(z.string()).default([]),
     repo: z.url().optional(),
     url: z.url().optional(),
+    /** Hide the project detail and live links when Source is the only link. */
+    sourceOnly: z.boolean().default(false),
     /** Related Post slug, if this project has a write-up in the Writing zone. */
     post: z.string().optional(),
     featured: z.boolean().default(false),

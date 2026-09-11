@@ -6,11 +6,13 @@ import { formatDate } from '../site.config';
 
 interface Props {
   post: Post;
+  headings?: { depth: number; slug: string; text: string }[];
 }
 
-const { post } = Astro.props;
+const { post, headings = [] } = Astro.props;
 const { title, pubDate, updatedDate, tags, draft, unlisted } = post.data;
 const tones = await getTagTones();
+const toc = headings.filter((heading) => heading.depth >= 2);
 
 /**
  * Tag pages are generated from listed Posts only, so an unlisted Post's tags
@@ -47,53 +49,72 @@ const tagsLink = !unlisted;
     )
   }
 
-  <article class="prose-page">
-    <header class="post-header">
-      <h1>{title}</h1>
+  <div class="post-layout">
+    <article class="prose-page">
+      <header class="post-header">
+        <h1>{title}</h1>
 
-      <div class="post-meta">
-        <time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time>
+        <div class="post-meta">
+          <time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time>
 
-        {
-          updatedDate && (
-            <span class="post-meta__updated">
-              updated <time datetime={updatedDate.toISOString()}>
-                {formatDate(updatedDate)}
-              </time>
-            </span>
-          )
-        }
+          {
+            updatedDate && (
+              <span class="post-meta__updated">
+                updated <time datetime={updatedDate.toISOString()}>
+                  {formatDate(updatedDate)}
+                </time>
+              </span>
+            )
+          }
 
-        {
-          tags.length > 0 && (
-            <ul class="tag-list">
-              {tags.map((tag) =>
-                tagsLink ? (
-                  <li>
-                    <a
-                      class="tag-chip"
-                      data-tone={tones.get(tag)}
-                      href={`/blog/tags/${tagSlug(tag)}`}
-                    >
-                      {tagLabel(tag)}
-                    </a>
-                  </li>
-                ) : (
-                  <li>
-                    <span class="tag-chip" data-tone={tones.get(tag)}>
-                      {tagLabel(tag)}
-                    </span>
-                  </li>
-                ),
-              )}
-            </ul>
-          )
-        }
+          {
+            tags.length > 0 && (
+              <ul class="tag-list">
+                {tags.map((tag) =>
+                  tagsLink ? (
+                    <li>
+                      <a
+                        class="tag-chip"
+                        data-tone={tones.get(tag)}
+                        href={`/blog/tags/${tagSlug(tag)}`}
+                      >
+                        {tagLabel(tag)}
+                      </a>
+                    </li>
+                  ) : (
+                    <li>
+                      <span class="tag-chip" data-tone={tones.get(tag)}>
+                        {tagLabel(tag)}
+                      </span>
+                    </li>
+                  ),
+                )}
+              </ul>
+            )
+          }
+        </div>
+      </header>
+
+      <div class="prose">
+        <slot />
       </div>
-    </header>
+    </article>
 
-    <div class="prose">
-      <slot />
-    </div>
-  </article>
+    {
+      toc.length > 0 && (
+        <aside class="post-toc" aria-label="Table of contents">
+          <p class="post-toc__title">On this page</p>
+          <nav>
+            <ul>
+              {toc.map((heading) => (
+                <li class={`post-toc__item post-toc__item--${heading.depth}`}>
+                  <a href={`#${heading.slug}`}>{heading.text}</a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </aside>
+      )
+    }
+  </div>
 </BaseLayout>

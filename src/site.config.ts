@@ -1,16 +1,15 @@
 /**
  * Everything about *you* that the templates need, in one file.
  *
- * Placeholders below are marked TODO. Replace them before launch; the README
- * has the full pre-launch checklist.
+ * Site-wide values used by the layouts and pages.
  */
 
 export const site = {
   author: 'Fu Lim',
   /** Shown in the browser tab and as the site-wide title. */
   title: 'Fu Lim',
-  /** TODO: one line, used on the home page above your name. */
-  tagline: 'Backend engineer',
+  /** Used on the home page above your name. */
+  tagline: 'Backend Engineer',
   /** Used as the fallback meta description on pages without their own. */
   description:
     'Personal site of Fu Lim — projects, career, and writing about how software works.',
