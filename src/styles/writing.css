@@ -196,6 +196,48 @@
   height: auto;
   margin-block: var(--space-4);
   border-radius: var(--radius);
+  cursor: zoom-in;
+}
+
+.prose img:hover {
+  opacity: 0.88;
+}
+
+.image-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  padding: var(--space-4);
+  background: rgb(0 0 0 / 0.86);
+  cursor: zoom-out;
+}
+
+.image-lightbox img {
+  max-width: 100%;
+  max-height: calc(100vh - 2 * var(--space-4));
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  cursor: default;
+  border-radius: var(--radius);
+  box-shadow: 0 1rem 3rem rgb(0 0 0 / 0.35);
+}
+
+.image-lightbox__close {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid rgb(255 255 255 / 0.55);
+  border-radius: 50%;
+  background: rgb(0 0 0 / 0.35);
+  color: white;
+  font-size: var(--text-xl);
+  line-height: 1;
+  cursor: pointer;
 }
 
 .prose figure figcaption {

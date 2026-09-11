@@ -40,9 +40,8 @@ const SITE = 'https://fulim.tech';
 export default defineConfig({
   site: SITE,
 
-  // No UI framework integration. The site is static HTML and CSS; every page
-  // ships zero JavaScript apart from the small inline theme snippet in
-  // BaseLayout.astro. See docs/adr/0005.
+  // No UI framework integration. The site uses only the small inline scripts
+  // in BaseLayout.astro. See docs/adr/0005.
   integrations: [
     sitemap({
       filter: (page) => !UNLISTED.some((unlisted) => page.endsWith(unlisted)),
