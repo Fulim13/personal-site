@@ -5,6 +5,8 @@ year: 2025
 featured: true
 sourceOnly: true
 tech:
+  - C++
+  - Cuda
   - Python
 repo: https://github.com/Fulim13/jpeg
 ---
