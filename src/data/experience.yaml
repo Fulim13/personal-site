@@ -82,3 +82,10 @@
   role: AWS Certified Solutions Architect
   start: 2026-09
   url: https://www.credly.com/badges/24c363ee-e2d3-4daf-8961-ce8bc713c04a/public_url
+
+- id: go-event-driven-v2
+  kind: certification
+  company: Three Dots Labs
+  role: Go Event-Driven v2.0
+  start: 2026-09
+  url: https://threedots.tech/cert/Ebcgqnvx/
