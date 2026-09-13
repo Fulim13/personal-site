@@ -1,5 +1,6 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+import Icon from '../components/Icon.astro';
 import type { Post } from '../lib/content';
 import { excerpt, getTagTones, tagLabel, tagSlug } from '../lib/content';
 import { formatDate } from '../site.config';
@@ -10,7 +11,7 @@ interface Props {
 }
 
 const { post, headings = [] } = Astro.props;
-const { title, pubDate, updatedDate, tags, draft, unlisted } = post.data;
+const { title, pubDate, updatedDate, tags, draft, unlisted, repo } = post.data;
 const tones = await getTagTones();
 const toc = headings.filter((heading) => heading.depth >= 2);
 
@@ -56,6 +57,20 @@ const tagsLink = !unlisted;
 
         <div class="post-meta">
           <time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time>
+
+          {
+            repo && (
+              <a
+                class="post-source"
+                href={repo}
+                rel="noopener"
+                aria-label="View source on GitHub"
+              >
+                <Icon name="github" />
+                <span>Source</span>
+              </a>
+            )
+          }
 
           {
             updatedDate && (

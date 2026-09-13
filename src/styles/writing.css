@@ -103,6 +103,12 @@
   font-style: italic;
 }
 
+.post-source {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
 .tag-list {
   display: flex;
   flex-wrap: wrap;

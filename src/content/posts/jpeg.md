@@ -5,6 +5,7 @@ featured: true
 unlisted: false
 tags:
   - image-processing
+repo: https://github.com/Fulim13/jpeg
 description: >-
   This explains JPEG lossy image compression using DCT, quantization, run-length encoding, and Huffman coding, while comparing CPU, CUDA, and OpenMP performance.
 ---

@@ -32,6 +32,8 @@ const posts = defineCollection({
     /** Surfaced above ordinary Posts on the blog index. */
     featured: z.boolean().default(false),
     tags: z.array(z.string()).default([]),
+    /** Optional source repository for the implementation discussed in the Post. */
+    repo: z.url().optional(),
     /**
      * Optional. When absent, the meta description and OG card fall back to the
      * Post's opening prose. Add one when the automatic extract reads badly.
